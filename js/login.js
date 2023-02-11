@@ -33,4 +33,5 @@ function autenticar(email, senha){
         console.log(error);
         alert("Não foi possivel se autenticar");
     })
+    
 }
