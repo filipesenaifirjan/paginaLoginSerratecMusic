@@ -3,27 +3,34 @@ let formulario = {
     senha: document.querySelector("#senha"),
     btnEntrar: document.querySelector("#btn-entrar")
 };
-formulario.btnEntrar.addEventListener('click' , () => {
-    alert("Olá!!");
-    
+
+//Aqui estamos escutando o evento de click.
+formulario.btnEntrar.addEventListener('click', () => {
+
     let usuario = new Usuario({
         email: formulario.email.value,
         senha: formulario.senha.value
     });
 
+    //Validar se o usuario e senha podem acessar o sistema.
     autenticar(usuario.email, usuario.senha);
-//window.open('/artistas.html', '_self')
 })
 
 function autenticar(email, senha){
-fetch(` ${URL_BASE}/api/login` , {
-    headers:{
-        "Content-Type": "application/json"
-    },
-    method: "POST",
-    body: JSON.stringify({user: email, password: senha})
-})
-.then(responde => {
-    let token = responde.headers.get("Authorization")
-})
+    fetch(`${URL_BASE}/api/login`, {
+        headers:{
+            "Content-Type": "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify({user: email, password: senha})
+    })
+    .then(response => {
+        let token = response.headers.get("Authorization");
+        salvarToken(token);
+        direcionarTelaDeArtistas();        
+    })
+    .catch(error => {
+        console.log(error);
+        alert("Não foi possivel se autenticar");
+    })
 }
